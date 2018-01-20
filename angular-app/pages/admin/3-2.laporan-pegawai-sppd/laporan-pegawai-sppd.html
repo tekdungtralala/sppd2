@@ -1,0 +1,154 @@
+<div>
+	<style type="text/css">
+		.large-window-class .modal-dialog {
+			width: 80%;
+		}
+	</style>
+	<div class="row">
+		<div class="col-xs-6">
+			<div class="box" style="height: 272px">
+				<div class="box-header with-border">
+					<h3 class="box-title">Grafik</h3>
+				</div>
+				<canvas id="doughnut" class="chart chart-doughnut"
+					height="80px" 
+					chart-data="vm.data"
+					chart-labels="vm.labels">
+				</canvas>
+			</div>
+		</div>
+		<div class="col-xs-6">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+					</h3>
+					<div class="box-tools">
+					</div>
+				</div>
+
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th class="has-sort" ng-click="vm.toggleSort('name')">
+									Nama Pegawai
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+name' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+name' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-name' "></span>
+									</span>
+								</th>
+								<th>Total Melakukan SPPD</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy">
+								<td>{{data.name}}</td>
+								<td>
+									
+									<span class="badge" style="cursor: pointer;"
+										ng-click="vm.openModal(data, 'data-modal.html');">
+										{{data.list.length}}
+										&nbsp;
+										<span class="glyphicon glyphicon-eye-open"></span>
+									</span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row" style="background: white;margin: 1px;">
+		<div class="box-body table-responsive no-padding">
+			<table class="table table-hover">
+				<tbody>
+					<tr>
+						<th>No</th>
+						<th>NIP / NAMA</th>
+						<th>Jabatan</th>
+						<th>Tanggal Dinas</th>
+						<th>Tujuan</th>
+					</tr>
+					<tr ng-repeat="data in vm.listSppd">
+						<td>
+							{{ $index + 1 }}
+						</td>
+						<td>
+							<div ng-repeat="o in data.officers">
+								{{ o.officer_id }} - {{ o.name }}
+							</div>
+						</td>
+						<td>
+							<div ng-repeat="o in data.officers">
+								{{ o.office_position_name }}
+							</div>
+						</td>
+						<td>
+							{{ data.start_date}} - {{ data.end_date }}
+						</td>
+						<td>
+							{{ data.objective }}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="data-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Daftar SPPD Pegawai</h4>
+		</div>
+		<div class="modal-body">
+			<div class="box-body no-padding">
+				<table class="table table-striped">
+					<tbody>
+						<tr>
+							<th>Nomor Surat Tugas</th>
+							<th>Tanggal</th>
+							<th>Tujuan</th>
+							<th>Nomor SPD</th>
+							<th>Total Biaya Dinas</th>
+							<th>Laporan Kegiatan</th>
+						</tr>
+						<tr ng-repeat="data in vm.formValue.list">
+							<td>
+								<span class="glyphicon glyphicon-print" style="cursor: pointer;" ng-click="vm.printLembar(1, data.sppd.id );"></span>
+								&nbsp;
+								{{ data.sppd.reference_number }}
+							<td>{{ data.sppd.start_date }} - {{ data.sppd.end_date }}</td>
+							<td>{{ data.sppd.objective }}</td>
+							<td>
+								{{ data.reference_number }}
+								&nbsp;
+								<span class="glyphicon glyphicon-print" style="cursor: pointer;" ng-click="vm.printLembar(2, data.id );"></span>
+							</td>
+							<td>
+								{{ data.totalCostRp }}
+								&nbsp;
+								<span class="glyphicon glyphicon-print" style="cursor: pointer;" ng-click="vm.printLembar(3, data.id );"></span>
+								&nbsp;
+								<span class="glyphicon glyphicon-print" style="cursor: pointer;" ng-click="vm.printLembar(4, data.id );"></span>
+							</td>
+							<td>
+								<span class="glyphicon glyphicon-print" style="cursor: pointer;" ng-click="vm.printLembar(5, data.sppd.id );"></span>
+								&nbsp;
+								{{ data.sppd.report_content ? ( data.sppd.report_content | limitTo:30 ) + ( data.sppd.report_content.length > 30 ? '...' : '' ) : '' }}
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Tutup
+			</button>
+		</div>
+	</script>
+</div>

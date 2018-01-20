@@ -1,0 +1,159 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+
+					</h3>
+					<div class="box-tools">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="table_search" class="form-control pull-right" placeholder="Search" ng-model="vm.search">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="col-xs-6">
+					<h3 style="margin-top: 0px;">
+						Rentang Periode
+					</h3>
+					<div class="row">
+						<div class="col-xs-4">
+							<button type="button" class="btn btn-block btn-flat"
+								ng-class="{'btn-primary': vm.periode == 'ALL', 'btn-default': vm.periode != 'ALL'}"
+								ng-click="vm.changePeriode('ALL');">
+								Semua
+							</button>
+						</div>
+						<div class="col-xs-4">
+							<button type="button" class="btn btn-block btn-flat"
+								ng-class="{'btn-primary': vm.periode == 'LAST_YEAR', 'btn-default': vm.periode != 'LAST_YEAR'}"
+								ng-click="vm.changePeriode('LAST_YEAR');">
+								1 Tahun terakhir
+							</button>
+						</div>
+						<div class="col-xs-4">
+							<button type="button" class="btn btn-block btn-flat"
+								ng-class="{'btn-primary': vm.periode == 'LAST_6_MONTH', 'btn-default': vm.periode != 'LAST_6_MONTH'}"
+								ng-click="vm.changePeriode('LAST_6_MONTH');">
+								6 Bulan terakhir
+							</button>
+						</div>
+					</div>
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-xs-4">
+							<button type="button" class="btn btn-block btn-flat"
+								ng-class="{'btn-primary': vm.periode == 'LAST_3_MONTH', 'btn-default': vm.periode != 'LAST_3_MONTH'}"
+								ng-click="vm.changePeriode('LAST_3_MONTH');">
+								3 Bulan terakhir
+							</button>
+						</div>
+						<div class="col-xs-4">
+							<button type="button" class="btn btn-block btn-flat"
+								ng-class="{'btn-primary': vm.periode == 'LAST_MONTH', 'btn-default': vm.periode != 'LAST_MONTH'}"
+								ng-click="vm.changePeriode('LAST_MONTH');">
+								1 Bulan terakhir
+							</button>
+						</div>
+						<div class="col-xs-4">
+							<button type="button" class="btn btn-block btn-flat"
+								ng-class="{'btn-primary': vm.periode == 'LAST_WEEK', 'btn-default': vm.periode != 'LAST_WEEK'}"
+								ng-click="vm.changePeriode('LAST_WEEK');">
+								1 Minggu terakhir
+							</button>
+						</div>
+					</div>
+
+					<div class="row" style="margin-top: 10px;">
+						<div class="col-xs-5"><h4>Total Biaya</h4></div>
+						<div class="col-xs-5"><h4>{{vm.totalCostRp}}</h4></div>
+						<div class="col-xs-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5"><h4>Total Uang Harian</h4></div>
+						<div class="col-xs-5"><h4>{{vm.totalDailyCostRp}}</h4></div>
+						<div class="col-xs-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5"><h4>Total Biaya Penginapan</h4></div>
+						<div class="col-xs-5"><h4>{{vm.totalLodgingCostRp}}</h4></div>
+						<div class="col-xs-2"></div>
+					</div>
+					<div class="row">
+						<div class="col-xs-5"><h4>Total Biaya Transport</h4></div>
+						<div class="col-xs-5"><h4>{{vm.totalTransportCostRp}}</h4></div>
+						<div class="col-xs-2"></div>
+					</div>
+
+				</div>
+				<div class="col-xs-6">
+					<h3 style="margin-top: 0px;">
+						Grafik
+					</h3>
+					<div>
+						<canvas id="bar"
+							class="chart chart-bar"
+							chart-data="vm.data"
+							chart-labels="vm.labels">
+						</canvas>
+					</div>
+				</div>
+				<div class="clearfix"></div>
+
+				<div class="box-body table-responsive no-padding" style="margin-top: 10px;">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th class="has-sort" ng-click="vm.toggleSort('id')">
+									ID
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th>
+								<th>Petugas / NIP </th>
+								<th>Cetak</th>
+								<th>Tanggal Pelaksanaan</th>
+								<th>Tujuan</th>
+								<th>Judul Laporan</th>
+								<th>Cetak</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy | filter:vm.search">
+								<td>{{data.id}}</td>
+								<td>
+									<p ng-repeat="p in data.officers">
+										{{p.name}} - {{ p.officer_id }}
+									</p>
+								</td>
+								<td class="btn-actions">
+									<p ng-repeat="p in data.officers">
+										( SPD &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(2, p.id );"></span> )
+										( Rincian Biaya &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(3, p.id );"></span> )
+										( Bukti Kas &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(4, p.id );"></span> )<br/>
+									</p>
+								</td>
+								<td>
+									{{ data.start_date }} - {{ data.end_date }}
+								</td>
+								<td>
+									{{ data.objective }}
+								</td>
+								<td>
+									{{ data.report_title ? ( data.report_title | limitTo:30 ) + ( data.report_title.length > 30 ? '...' : '' ) : '' }}
+								</td>
+								<td class="btn-actions">
+									( Surat Tugas &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(1, data.id );"></span> )<br/>
+									( Laporan Kegiatan &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(5, data.id );"></span> )
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

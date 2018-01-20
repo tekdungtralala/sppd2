@@ -1,0 +1,178 @@
+<div class="wrapper">
+  <header class="main-header">
+	<a href="http://localhost/sppd-master/#!/admin/home" class="logo">
+	  <span class="logo-mini"><b>A</b>PL</span>
+	  <span class="logo-lg"><b>Aplikasi</b>SPPD</span>
+	</a>
+	<nav class="navbar navbar-static-top">
+	  <a href="javascript:void(0);" class="sidebar-toggle" data-toggle="push-menu" role="button">
+		<span class="sr-only">Toggle navigation</span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+		<span class="icon-bar"></span>
+	  </a>
+	</nav>
+  </header>
+
+  <aside class="main-sidebar">
+	<section class="sidebar">
+	  <div class="user-panel">
+		<div class="pull-left image">
+		  <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+		</div>
+		<div class="pull-left info">
+		  <p>Administrator</p>
+		  <!-- <a href="javascript:void(0);"><i class="fa fa-circle text-success"></i> Online</a> -->
+		</div>
+	  </div>
+	  <ul class="sidebar-menu" data-widget="tree">
+		<li class="header">MAIN NAVIGATION</li>
+
+		<li class="treeview" ng-class="{'active': $root.treeViewActive === 'Master'}">
+		  <a href="javascript:void(0);">
+			<i class="fa fa-dashboard"></i> <span>Master</span>
+			<span class="pull-right-container">
+			  <i class="fa fa-angle-left pull-right"></i>
+			</span>
+		  </a>
+		  <ul class="treeview-menu">
+			<li ng-click="vm.toState('data-jabatan');" ng-class="{'active': $root.menuActive === '/data-jabatan' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Jabatan</a>
+			</li>
+			<li ng-click="vm.toState('data-golongan');" ng-class="{'active': $root.menuActive === '/data-golongan' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Golongan</a>
+			</li>
+			<li ng-click="vm.toState('data-pegawai');" ng-class="{'active': $root.menuActive === '/data-pegawai' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Pegawai</a>
+			</li>
+			<li ng-click="vm.toState('data-provinsi');" ng-class="{'active': $root.menuActive === '/data-provinsi' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Provinsi</a>
+			</li>
+			<li ng-click="vm.toState('data-angkutan');" ng-class="{'active': $root.menuActive === '/data-angkutan' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Angkutan</a>
+			</li>
+			<li ng-click="vm.toState('data-mata-anggaran');" ng-class="{'active': $root.menuActive === '/data-mata-anggaran' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Mata Kegiatan</a>
+			</li>
+			<li ng-click="vm.toState('data-biaya-perjalanan-dinas');" ng-class="{'active': $root.menuActive === '/data-biaya-perjalanan-dinas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i> Data Biaya Dinas</a>
+			</li>
+		  </ul>
+		</li>
+
+		<li class="treeview" ng-class="{'active': $root.treeViewActive === 'Transaksi'}">
+		  <a href="javascript:void(0);">
+			<i class="fa fa-folder"></i> <span>Transaksi</span>
+			<span class="pull-right-container">
+			  <i class="fa fa-angle-left pull-right"></i>
+			</span>
+		  </a>
+		  <ul class="treeview-menu">
+			<li ng-click="vm.toState('entry-surat-tugas');" ng-class="{'active': $root.menuActive === '/entry-surat-tugas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Surat Tugas</a>
+			</li>
+			<li ng-click="vm.toState('entry-surat-perjalanan-dinas');" ng-class="{'active': $root.menuActive === '/entry-surat-perjalanan-dinas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Surat Perjalanan Dinas</a>
+			</li>
+			<li ng-click="vm.toState('entry-biaya-dinas');" ng-class="{'active': $root.menuActive === '/entry-biaya-dinas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Biaya Dinas</a>
+			</li>
+			<li ng-click="vm.toState('entry-bukti-kas');" ng-class="{'active': $root.menuActive === '/entry-bukti-kas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Bukti Kas Pengeluaran</a>
+			</li>
+			<li ng-click="vm.toState('entry-hasil-dinas');" ng-class="{'active': $root.menuActive === '/entry-hasil-dinas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Hasil Dinas</a>
+			</li>
+		  </ul>
+		</li>
+
+		<li class="treeview" ng-class="{'active': $root.treeViewActive === 'Laporan'}">
+		  <a href="javascript:void(0);">
+			<i class="fa fa-folder"></i> <span>Laporan</span>
+			<span class="pull-right-container">
+			  <i class="fa fa-angle-left pull-right"></i>
+			</span>
+		  </a>
+		  <ul class="treeview-menu">
+			<!-- <li ng-click="vm.toState('laporan-status-sppd');" ng-class="{'active': $root.menuActive === '/laporan-status-sppd' }"> 
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Dashboard Status Berkas SPPD</a>
+			</li>-->
+			<!--<li ng-click="vm.toState('laporan-pegawai-sppd');" ng-class="{'active': $root.menuActive === '/laporan-pegawai-sppd' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Dashboard Pegawai SPPD</a>
+			</li> -->
+			<!--<li ng-click="vm.toState('laporan-tujuan-sppd');" ng-class="{'active': $root.menuActive === '/laporan-tujuan-sppd' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Tempat Tujuan SPPD</a>
+			</li>
+			<li ng-click="vm.toState('laporan-biaya-sppd');" ng-class="{'active': $root.menuActive === '/laporan-biaya-sppd' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Biaya SPPD</a>
+			</li>
+			<li ng-click="vm.toState('laporan-beban-anggaran');" ng-class="{'active': $root.menuActive === '/laporan-beban-anggaran' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Beban Anggaran</a>
+			</li>
+			<!--<li ng-click="vm.toState('laporan-semua-sppd');" ng-class="{'active': $root.menuActive === '/laporan-semua-sppd' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Semua SPPD</a>
+			</li>
+			
+			<!--<li ng-click="vm.toState('laporan-tujuan-sppd-2');" ng-class="{'active': $root.menuActive === '/laporan-tujuan-sppd-2' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Tujuan SPPD</a>
+			</li>-->
+			<li ng-click="vm.toState('laporan-status-sppd-2');" ng-class="{'active': $root.menuActive === '/laporan-status-sppd-2' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Surat Tugas</a>
+			</li>
+			<li ng-click="vm.toState('laporan-surat-tugas');" ng-class="{'active': $root.menuActive === '/laporan-surat-tugas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Surat Perjalanan Dinas</a>
+			</li>
+			<li ng-click="vm.toState('laporan-total-biaya-dinas');" ng-class="{'active': $root.menuActive === '/laporan-total-biaya-dinas' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Biaya Dinas</a>
+			</li>
+			<li ng-click="vm.toState('laporan-hasil-sppd');" ng-class="{'active': $root.menuActive === '/laporan-hasil-sppd' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Hasil Dinas</a>
+			</li>
+			<li ng-click="vm.toState('laporan-status-anggaran');" ng-class="{'active': $root.menuActive === '/laporan-status-anggaran' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Kode Mata Kegiatan</a>
+			</li>
+			<li ng-click="vm.toState('laporan-total-keuangan');" ng-class="{'active': $root.menuActive === '/laporan-total-keuangan' }">
+				<a href="javascript:void(0);"><i class="fa fa-circle-o"></i>Rekapitulasi Kas Pengeluaran</a>
+			</li>
+		  </ul>
+		</li>
+
+		<li ng-click="vm.logout();"><a href="javascript:void(0);"><i class="fa fa-circle-o text-yellow"></i><span>Logout</span></a></li>
+	  </ul>
+	</section>
+  </aside>
+
+  <div class="content-wrapper">
+	<section class="content-header">
+	  <h1>
+		{{$root.titlePage}}
+	  </h1>
+	  
+	  	<ol class="breadcrumb" ng-hide="vm.isHome">
+		<li><i class="fa fa-dashboard"></i>&nbsp; Admin</li>
+		<li>{{$root.treeViewActive}}</li>
+		<li class="active">{{$root.titlePage}}</li>
+	  </ol>
+	</section>
+
+	<section class="content admin-content">
+		<ui-view></ui-view>
+	</section>
+  </div>
+
+  <footer class="main-footer">
+	<div class="pull-right hidden-xs">
+	  <b>Version</b> 2.4.0
+	</div>
+	<strong>Copyright &copy; 2014-2016 <a href="https://adminlte.io">Almsaeed Studio</a>.</strong> All rights
+	reserved.
+  </footer>
+
+	<script src="dist/js/adminlte.min.js"></script>
+	<script src="dist/js/demo.js"></script>
+	<script>
+	  $(document).ready(function () {
+		$('.sidebar-menu').tree();
+	  })
+	</script>
+</div>

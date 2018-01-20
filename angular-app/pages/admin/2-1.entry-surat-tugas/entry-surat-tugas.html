@@ -1,0 +1,296 @@
+<div>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+						<button type="button" class="btn btn-block btn-success btn-flat"
+							ng-click="vm.openModal(null, 'data-modal.html', false);">
+							<span class="glyphicon glyphicon-plus"></span>
+							&nbsp;
+							Create
+						</button>
+					</h3>
+					<div class="box-tools">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="table_search" class="form-control pull-right" placeholder="Search" ng-model="vm.search">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th class="has-sort" ng-click="vm.toggleSort('id')">
+									No
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('reference_number')">
+									No. Surat Tugas
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-reference_number' && vm.orderBy !== '+reference_number' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+reference_number' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-reference_number' "></span>
+									</span>
+								</th>
+								<th>Nama Pegawai / NIP</th>
+								<th class="has-sort" ng-click="vm.toggleSort('objective')">
+									Tujuan
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-objective' && vm.orderBy !== '+objective' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+objective' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-objective' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('start_date')">
+									Tanggal Dinas
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-start_date' && vm.orderBy !== '+start_date' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+start_date' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-start_date' "></span>
+									</span>
+								</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy | filter:vm.search">
+								<td>{{$index + 1}}</td>
+								<td>{{data.reference_number}}</td>
+								<td>
+									<p ng-repeat="p in data.officers">
+										{{p.name}} - {{p.officer_id}}
+									</p>
+								</td>
+								<td>{{data.objective}}</td>
+								<td>
+									{{data.start_date}} - {{data.end_date}}<br/>
+									( {{data.total_day}} hari )
+								</td>
+								
+								<td class="btn-actions">
+									<span 
+										class="glyphicon glyphicon-remove"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'confirm-modal.html');"
+										></span>
+									<span 
+										class="glyphicon glyphicon-pencil"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'data-modal.html', false);"
+										></span>
+									<span 
+										class="glyphicon glyphicon-print"
+										style="margin-right: 10px;"
+										ng-click="vm.printSuratTugas( data )"
+										></span>
+									<!-- <span  
+										class="glyphicon glyphicon-eye-open"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'data-modal.html', true);"
+										></span> -->
+									<span 
+										class="glyphicon glyphicon-log-in"
+										ng-click="vm.openModal(data, 'confirm-to-next-state-modal.html');"
+										></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="data-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Form Entry Surat Tugas</h4>
+		</div>
+		<div class="modal-body">
+
+			<form role="form">
+				<div class="box-body">
+					<!-- <div class="form-group" ng-show="vm.formValue.id"> 
+						<label>Id</label>
+						<input type="text" class="form-control" disabled ng-model="vm.formValue.id">
+					</div> -->
+
+					<div class="form-group" ng-show="vm.formValue.reference_number">
+						<label>No. Surat Tugas</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.reference_number">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['base']}">
+						<label>Dasar</label>
+						<textarea class="form-control" rows="3" id="base" ng-model="vm.formValue.base" ng-disabled="true" style="cursor: default;"></textarea>
+					</div>
+
+					<div class="form-group" id="officers" ng-class="{'has-error': vm.hasError['officers']}">
+						<label>Memberi Tugas Kepada</label>
+						<div class="input-group" style="margin-bottom: 5px;" ng-hide="vm.formValue.disabled">
+							<select class="form-control" ng-model="vm.formValue.officeIdTemp" >
+								<option ng-repeat="option in vm.formValue.listOfficers" value="{{option.id}}">{{option.name}}</option>
+							</select>
+							<span class="input-group-addon" ng-click="vm.addOfficerToSPPD()" style="cursor: pointer;" ng-hide="vm.formValue.disabled">
+								<i class="fa fa-plus"></i>
+							</span>
+						</div>
+						<p ng-repeat="o in vm.formValue.officers" ng-hide="!vm.formValue.disabled">
+							{{o.nameAndOfficeId}}
+						</p>
+						<div class="input-group" style="margin-bottom: 2px;" ng-repeat="o in vm.formValue.officers" ng-hide="vm.formValue.disabled">
+							<input type="text" class="form-control" disabled ng-model="o.nameAndOfficeId"
+								style="cursor: default;background: #ffffff;" />
+							<span class="input-group-addon" style="cursor: pointer;" ng-click="vm.removeOfficerFromSPPD( o )"><i class="fa fa-close"></i></span>
+						</div>
+					</div>	
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['start_date']}">
+						<label>Tanggal Mulai</label>
+						<p class="input-group">
+							<input type="text" class="form-control" id="start_date"
+								uib-datepicker-popup
+								ng-model="vm.formValue.start_date" 
+								is-open="startDateOpen"
+								datepicker-options="dateOptions" 
+								close-text="Close"
+								alt-input-formats="altInputFormats"  ng-disabled="vm.formValue.disabled" style="cursor: default;"/>
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" ng-click="startDateOpen = !startDateOpen"  ng-disabled="vm.formValue.disabled" style="cursor: default;">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['end_date']}">
+						<label>Tanggal Selesai</label>
+						<p class="input-group">
+							<input type="text" class="form-control" id="end_date" 
+								uib-datepicker-popup
+								ng-model="vm.formValue.end_date" 
+								is-open="endDateOpen"
+								datepicker-options="dateOptions" 
+								close-text="Close"
+								alt-input-formats="altInputFormats"  ng-disabled="vm.formValue.disabled" style="cursor: default;"/>
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" ng-click="endDateOpen = !endDateOpen"  ng-disabled="vm.formValue.disabled" style="cursor: default;">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+
+					<div class="form-group" id="objective" ng-class="{'has-error': vm.hasError['objective']}">
+						<label>Tujuan</label>
+						<select class="form-control" ng-model="vm.formValue.province_id" ng-change="vm.provinceChanged();"  ng-disabled="vm.formValue.disabled" style="cursor: default;">
+							<option ng-repeat="option in vm.provinces" value="{{option.id}}">{{option.name}}</option>
+						</select>
+						<br/>
+						<select class="form-control" ng-show="vm.formValue.showCities" ng-model="vm.formValue.objective"  ng-disabled="vm.formValue.disabled" style="cursor: default;">
+							<option ng-repeat="option in vm.cities" value="{{option.name}}">{{option.name}}</option>
+						</select>
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['task']}">
+						<label>Tugas</label>
+						<input type="text" class="form-control" placeholder="Tugas" id="task"
+						 	ng-disabled="vm.formValue.disabled" style="cursor: default;"
+							ng-model="vm.formValue.task">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['description']}">
+						<label>Keterangan</label>
+						<textarea class="form-control" rows="3" id="description" ng-model="vm.formValue.description"  ng-disabled="true" style="cursor: default;"></textarea>
+					</div>				
+				</div>
+			</form>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Tutup
+			</button>
+			<button type="button" class="btn btn-primary btn-flat"
+				ng-hide="vm.formValue.disabled"
+				ng-click="vm.submit()">
+				Simpan
+			</button>
+			<button type="button" class="btn btn-primary btn-flat"
+				ng-hide="!vm.formValue.disabled"
+				ng-click="vm.printSuratTugas( vm.formValue )">
+				<span class="glyphicon glyphicon-print"></span>
+				&nbsp;
+				Cetak
+			</button>
+			<button type="button" class="btn btn-success btn-flat"
+				ng-click="vm.closeModal();vm.openModal(vm.formValue, 'confirm-to-next-state-modal.html');"
+				ng-hide="!vm.formValue.disabled">
+				<span class="glyphicon glyphicon-log-in"></span>
+				&nbsp;
+				Input Data SPD
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Apakah Anda yakin, ingin menghapus data yang dipilih?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-danger btn-flat"
+				ng-click="vm.remove()">
+				Hapus
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-to-next-state-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Tolong pastikan semua data sudah benar<br/>anda yakin ingin melanjutkan SPPD ini ?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-success btn-flat"
+				ng-click="vm.processToSPD()"
+				ng-hide="!vm.formValue.id">
+				<span class="glyphicon glyphicon-log-in"></span>
+				&nbsp;
+				Input Data SPD
+			</button>
+		</div>
+	</script>
+</div>

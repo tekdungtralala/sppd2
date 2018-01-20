@@ -1,0 +1,118 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+					</h3>
+					<div class="box-tools">
+					</div>
+				</div>
+
+				<div class="col-xs-6">
+					<form class="form-horizontal">
+						<div class="box-body" style="padding-bottom: 0px;">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">Start Date</label>
+								<div class="col-sm-8">
+									<p class="input-group">
+										<input type="text" class="form-control" id="startDate"
+											uib-datepicker-popup
+											ng-model="vm.startDate" 
+											ng-change="vm.startDateChanged()"
+											is-open="startDateOpen"
+											close-text="Close"
+											alt-input-formats="altInputFormats" />
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default"
+												ng-click="startDateOpen = !startDateOpen">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</button>
+										</span>
+									</p>
+								</div>
+							</div>
+							<div class="form-group" style="margin-bottom: 0px;">
+								<label class="col-sm-4 control-label">End Date</label>
+								<div class="col-sm-8">
+									<p class="input-group">
+										<input type="text" class="form-control" id="endDate"
+											uib-datepicker-popup
+											ng-model="vm.endDate" 
+											is-open="endDateOpen"
+											datepicker-options="vm.endDateOpt"
+											close-text="Close"
+											alt-input-formats="altInputFormats" />
+										<span class="input-group-btn">
+											<button type="button" class="btn btn-default"
+												ng-click="endDateOpen = !endDateOpen">
+												<i class="glyphicon glyphicon-calendar"></i>
+											</button>
+										</span>
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="box-footer">
+							<button type="button" class="btn btn-primary pull-right" ng-click="vm.submitSearch();vm.searchClicked = true">Search</button>
+							<button type="button" class="btn btn-default pull-right" ng-click="vm.resetSearch()" style="margin-right: 20px;">Reset</button>
+							<button type="button" class="btn btn-success pull-right" ng-click="vm.printReport()"
+								ng-disabled="vm.listData.length === 0"
+								ng-show="vm.searchClicked"
+								style="margin-right: 20px;">Print</button>
+						</div>
+					</form>
+
+
+				</div>
+				<div class="clearfix"></div>
+
+				<div class="box-body table-responsive no-padding" ng-show="vm.searchClicked">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th>No</th>
+								<th>Tanggal</th>
+								<th>Nama Kota</th>
+								<th>Provinsi</th>
+								<th>Lama Jalan</th>
+								<th>Angkutan</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData">
+								<td>{{ $index + 1 }}</td>
+								<td>
+									{{ data.start_date }} - {{ data.end_date }}
+								</td>
+								<td>
+									{{ data.objective }}
+								</td>
+								<td>
+									{{ data.provinceName }}
+								</td>
+								<td>
+									{{ data.total_day }} hari
+								</td>
+								<td>
+									{{ data.transportation_type }}
+								</td>
+								<!-- 
+								<td class="btn-actions">
+									<p ng-repeat="p in data.officers">
+										( SPD &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(2, p.id );" style="cursor: pointer;"></span> )
+										( Rincian Biaya &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(3, p.id );" style="cursor: pointer;"></span> )
+										( Bukti Kas &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(4, p.id );" style="cursor: pointer;"></span> )<br/>
+									</p>
+								</td>
+								<td class="btn-actions">
+									( Surat Tugas &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(1, data.id );" style="cursor: pointer;"></span> )<br/>
+									( Laporan Kegiatan &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(5, data.id );" style="cursor: pointer;"></span> )
+								</td>
+								 -->
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,225 @@
+<div>
+	<style type="text/css">
+		.input-biaya .modal-dialog {
+			width: 90%;
+		}
+	</style>
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+
+					</h3>
+					<div class="box-tools">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="table_search" class="form-control pull-right" placeholder="Search" ng-model="vm.search">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<!-- <th class="has-sort" ng-click="vm.toggleSort('id')"> 
+									ID
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th> -->
+								<th class="has-sort" ng-click="vm.toggleSort('id')">
+									No
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th>
+								<th>No. Surat Tugas</th>
+								<th>Nama Pegawai</th>
+								<!-- <th>Tanggal Dibuat</th> -->
+								<th>Judul Laporan</th>
+								<th>Isi Laporan</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy | filter:vm.search">
+								<!-- <td>{{data.id}}</td> -->
+								<td>{{$index + 1}}</td>
+								<td>{{data.reference_number}}</td>
+								<td>
+									<p ng-repeat="p in data.officers">
+										{{p.name}}
+									</p>
+								</td>
+								<!-- <td> 
+									{{ data.report_created_date }}
+								</td>-->
+								<td>
+									{{ data.report_title ? ( data.report_title | limitTo:30 ) + ( data.report_title.length > 30 ? '...' : '' ) : '' }}
+								</td>
+								<td>
+									{{ data.report_content ? ( data.report_content | limitTo:30 ) + ( data.report_content.length > 30 ? '...' : '' ) : '' }}
+								</td>
+								<td class="btn-actions">
+									<span 
+										class="glyphicon glyphicon-remove"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'confirm-modal.html');"></span>
+									<span 
+										class="glyphicon glyphicon-pencil"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'data-modal.html', 'lg', 'input-biaya');"></span>
+									<span
+										ng-show="data.report_created_date && data.report_title && data.report_content" 
+										class="glyphicon glyphicon-print"
+										style="margin-right: 10px;" 
+										ng-click="vm.printHasilDinas( data );"></span>
+									<span 
+										ng-show="data.report_created_date && data.report_title && data.report_content"
+										class="glyphicon glyphicon-log-in"
+										ng-click="vm.openModal(data, 'confirm-to-next-state-modal.html');"></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="data-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Form Entry Hasil Dinas</h4>
+		</div>
+		<div class="modal-body">
+
+			<form role="form">
+				<div class="box-body">
+					<!-- <div class="form-group" ng-show="vm.formValue.id"> 
+						<label >Tanggal Mulai</label>
+						<input type="text" class="form-control" disabled
+							ng-model="vm.formValue.start_date">
+					</div>-->
+					<!-- <div class="form-group" ng-show="vm.formValue.id"> 
+						<label >Tanggal Selesai</label>
+						<input type="text" class="form-control" disabled
+							ng-model="vm.formValue.end_date">
+					</div>-->
+					<div class="form-group" ng-show="vm.formValue.id">
+						<label >Nomor Surat Tugas</label>
+						<input type="text" class="form-control" disabled
+							ng-model="vm.formValue.reference_number">
+					</div>
+
+					<div class="form-group" ng-show="vm.formValue.id">
+						<label >Nama Pegawai</label>
+						<input type="text" class="form-control" disabled
+							ng-repeat="o in vm.formValue.officers"
+							ng-model="o.name">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['reportTitle']}">
+						<label >Judul Laporan</label>
+						<input type="text" class="form-control" disabled
+							id="reportTitle"
+							ng-model="vm.formValue.reportTitle">
+					</div>
+
+					<!-- <div class="form-group" ng-class="{'has-error': vm.hasError['reportCreatedDate']}"> 
+						<label>Tanggal Pembuatan</label>
+						<p class="input-group">
+							<input type="text" class="form-control" id="reportCreatedDate"
+								uib-datepicker-popup
+								ng-model="vm.formValue.reportCreatedDate" 
+								is-open="startDateOpen"
+								datepicker-options="dateOptions" 
+								close-text="Close"
+								alt-input-formats="altInputFormats" />
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" 
+									ng-click="startDateOpen = !startDateOpen" >
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</p>
+					</div> -->
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['reportContent']}">
+						<label>Isi Laporan</label>
+						<textarea class="form-control" rows="5" id="reportContent" ng-model="vm.formValue.reportContent"></textarea>
+					</div>
+				</div>
+			</form>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Tutup
+			</button>
+			<button type="button" class="btn btn-primary btn-flat"
+				ng-click="vm.submit()">
+				Simpan
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Apakah Anda yakin, ingin menghapus data yang dipilih?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-danger btn-flat"
+				ng-click="vm.remove()">
+				Hapus
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-to-next-state-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Tolong pastikan semua data sudah benar<br/>anda yakin ingin menutup laporan ini ?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-success btn-flat"
+				ng-click="vm.closeTheReport();">
+				<span class="glyphicon glyphicon-log-in"></span>
+				&nbsp;
+				Selesai SPPD
+			</button>
+		</div>
+	</script>
+</div>

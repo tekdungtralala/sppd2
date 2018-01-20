@@ -1,0 +1,172 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+						<button type="button" class="btn btn-block btn-success btn-flat"
+							ng-click="vm.openModal(null, 'data-modal.html');">
+							<span class="glyphicon glyphicon-plus"></span>
+							&nbsp;
+							Create
+						</button>
+					</h3>
+					<div class="box-tools">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="table_search" class="form-control pull-right" placeholder="Search" ng-model="vm.search">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th class="has-sort" ng-click="vm.toggleSort('id')">
+									No
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('name')">
+									Nama Jabatan
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+name' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+name' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-name' "></span>
+									</span>
+								</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy | filter:vm.search">
+								<td>{{$index + 1}}</td>
+								<!-- <td>{{data.id}}</td> -->
+								<td>{{data.name}}</td>
+								<td class="btn-actions">
+									<span ng-show="data.imutable !== '1'"
+										class="glyphicon glyphicon-pencil"
+										ng-click="vm.openModal(data, 'data-modal.html');"
+										></span>
+									&nbsp;
+									<span ng-show="data.imutable !== '1'"
+										class="glyphicon glyphicon-remove"
+										ng-click="vm.openModal(data, 'confirm-modal.html');"
+										></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="data-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Form Entry Jabatan</h4>
+		</div>
+		<div class="modal-body">
+
+			<form role="form">
+				<div class="box-body">
+					<!-- <div class="form-group" ng-show="vm.formValue.id"> 
+						<label >Id</label>
+						<input type="text" class="form-control" placeholder="Enter email" disabled
+							ng-model="vm.formValue.id">
+					</div> -->
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['name']}">
+						<label >Nama Jabatan</label>
+						<input type="text" class="form-control"
+							placeholder="Nama Jabatan"
+							id="name"
+							ng-model="vm.formValue.name">
+					</div>
+				</div>
+			</form>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Tutup
+			</button>
+			<button type="button" class="btn btn-primary btn-flat"
+				ng-click="vm.submit()">
+				Simpan
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Apakah Anda yakin, ingin menghapus data yang dipilih?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-danger btn-flat"
+				ng-click="vm.remove()">
+				Hapus
+			</button>
+		</div>
+	</script>
+
+	<!-- 
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title"></h3>
+						<div class="box-tools">
+							<div class="input-group input-group-sm" style="width: 150px;">
+								<input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+								<div class="input-group-btn">
+									<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="box-body table-responsive no-padding">
+						<table class="table table-hover">
+							<tbody>
+								<tr>
+									<th>ID</th>
+									<th>User</th>
+									<th>Date</th>
+									<th>Status</th>
+									<th>Reason</th>
+								</tr>
+								<tr>
+									<td>183</td>
+									<td>John Doe</td>
+									<td>11-7-2014</td>
+									<td><span class="label label-success">Approved</span></td>
+									<td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	 -->
+</div>

@@ -1,0 +1,171 @@
+<div>
+	<div class="box">
+		<div class="box-header">
+			<h3 class="box-title"></h3>
+		</div>
+		<div class="box-body no-padding">
+			<div class="col-xs-4">
+				<div class="">
+					<div class="box-header">
+						<h3 class="box-title">Pilih Beban Anggaran</h3>
+					</div>
+					<div class="box-body">
+						<div class="form-group">
+							<label>Output</label>
+							<select class="form-control"
+								ng-model="vm.formValue.columnE"
+								ng-change="vm.columnEChanged()">
+								<option ng-repeat="option in vm.columnE" value="{{option}}">({{option.total}}) {{option.name}}</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label>Mata Anggaran</label>
+							<select class="form-control"
+								ng-model="vm.formValue.columnF"
+								ng-change="vm.columnFChanged()"
+								ng-disabled="vm.state == 0">
+								<option ng-repeat="option in vm.columnF" value="{{option}}">({{option.total}}) {{option.name}}</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label>Kode Pusat Biaya</label>
+							<div class="radio">
+								<label>
+									<input type="radio" name="optionsRadios" value="Dipa"
+										ng-model="vm.ccc" ng-change="vm.cccChanged();">
+										Dipa
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="optionsRadios" value="Non Dipa"
+										ng-model="vm.ccc" ng-change="vm.cccChanged();">
+										Non Dipa
+								</label>
+							</div>
+							<button type="button" class="btn btn-block btn-default btn-sm" style="width: 120px;" ng-click="vm.ccc = null;vm.cccChanged();">Reset Kode Pusat</button>
+						</div>
+
+						<div class="box-footer">
+							<button type="button" class="btn btn-default pull-right" ng-click="vm.resetValue();">Reset Form</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="">
+					<div class="box-header">
+						<h3 class="box-title">Grafik</h3>
+					</div>
+					<div class="box-body" style="height: 225px;">
+						<canvas id="doughnut" class="chart chart-doughnut"
+							height="120px" 
+							chart-data="vm.chartValue"
+							chart-labels="vm.chartLabel">
+						</canvas>
+					</div>
+				</div>
+			</div>
+			<div class="col-xs-4">
+				<div class="">
+					<div class="box-header">
+						<h3 class="box-title">Informasi</h3>
+					</div>
+					<div class="box-body" style="height: 225px; overflow-y: auto;">
+						<div ng-show="vm.state === 0">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th style="width: 10px">#</th>
+										<th>Output</th>
+										<th style="width: 100px">Jumlah SPD</th>
+									</tr>
+									<tr ng-repeat="data in vm.columnE | orderBy:'-total'">
+										<td>{{$index + 1}}.</td>
+										<td>{{data.name}}</td>
+										</td>
+										<td><span class="badge bg-red">{{data.total}}</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+						<div ng-show="vm.state !== 0">
+							<table class="table table-striped">
+								<tbody>
+									<tr>
+										<th style="width: 10px">#</th>
+										<th>Mata Anggaran</th>
+										<th style="width: 100px">Jumlah SPD</th>
+									</tr>
+									<tr ng-repeat="data in vm.columnF | orderBy:'-total'">
+										<td>{{$index + 1}}.</td>
+										<td>{{data.name}}</td>
+										</td>
+										<td><span class="badge bg-red">{{data.total}}</span></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-xs-12">
+				<div class="box">
+					<div class="box-body table-responsive no-padding">
+						<table class="table table-hover">
+							<tbody>
+								<tr>
+									<th class="has-sort" ng-click="vm.toggleSort('id')">
+										ID
+										<span>
+											<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+											<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+											<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+										</span>
+									</th>
+									<th>Petugas / NIP </th>
+									<th>Cetak</th>
+									<th>Kode Pusat</th>
+									<th>Output</th>
+									<th>Mata Anggaran</th>
+									<th>Cetak</th>
+								</tr>
+								<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy">
+									<td>{{data.id}}</td>
+									<td>
+										<p ng-repeat="p in data.officers">
+											{{p.name}} - {{ p.officer_id }}
+										</p>
+									</td>
+									<td class="btn-actions">
+										<p ng-repeat="p in data.officers">
+											( SPD &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(2, p.id );"></span> )
+											( Rincian Biaya &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(3, p.id );"></span> )
+											( Bukti Kas &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(4, p.id );"></span> )<br/>
+										</p>
+									</td>
+									<td>
+										{{ data.ccc }}
+									</td>
+									<td>
+										{{ data.column_e }}
+									</td>
+									<td>
+										{{ data.column_f }}
+									</td>
+									<td class="btn-actions">
+										( Surat Tugas &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(1, data.id );"></span> )<br/>
+										( Laporan Kegiatan &nbsp; <span class="glyphicon glyphicon-print" ng-click="vm.printLembar(5, data.id );"></span> )
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

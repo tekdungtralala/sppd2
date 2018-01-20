@@ -1,0 +1,108 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+					</h3>
+					<div class="box-tools">
+					</div>
+				</div>
+
+				<div class="col-xs-12">
+					<h4>Pilih Bulan</h4>
+				</div>
+				<div class="col-xs-3">
+					<div class="form-group">
+						<select class="form-control"
+							ng-model="vm.month"
+							ng-change="vm.monthChanged(option)">
+							<option ng-repeat="option in vm.months" value="{{option}}">{{ option.year }} - {{ option.name }}</option>
+						</select>
+					</div>
+				</div>
+				<div class="col-xs-9" ng-show="vm.month">
+					<button type="button" class="btn btn-default" style="margin-right: 20px;" ng-click="vm.searchClicked = false; vm.month = null">Reset</button>
+					<button type="button" class="btn btn-primary" style="margin-right: 20px;" ng-click="vm.submitSearch();vm.searchClicked = true">Search</button>
+					<button type="button" class="btn btn-success" style="margin-right: 20px;" ng-click="vm.printReport()" 
+						ng-disabled="vm.listData.length === 0"
+						ng-show="vm.searchClicked">Print</button>
+				</div>
+
+				<div class="clearfix"></div>
+
+				<div class="box-body table-responsive no-padding" ng-show="vm.month && vm.searchClicked">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th>No</th>
+								<!-- <th>No. Surat Tugas</th> -->
+								<th>Tanggal BKK</th>
+								<th>No. BKK</th>
+								<!-- <th>Kegiatan Output / Mata Anggaran</th> -->
+								<!-- <th>Kode Pusat</th> -->
+								<th>Uraian</th>
+								<th>Uang Harian</th>
+								<!-- <th>Jumlah</th> -->
+								<!-- <th>Total</th> -->
+							</tr>
+							<tr ng-repeat="data in vm.listData">
+								<td>{{ $index + 1 }}</td>
+								<!-- <td> 
+									{{ data.reference_number }}
+								</td> -->
+								<td>Tanggal BKK</td>
+								<td> 
+									<p ng-repeat="p in data.officers">
+										{{ p.kas_reference_number }}
+									</p>
+								</td>
+								<!-- <td> 
+									{{ data.column_e }} - {{ data.column_f }}
+								</td>-->
+								<!-- <td> 
+									<p ng-repeat="p in data.officers">
+										{{ p.kas_cost_center_code }}
+									</p>
+								</td> -->
+								<td>
+									<p ng-repeat="p in data.officers">
+										{{ p.kas_description ? ( p.kas_description | limitTo:30 ) + ( p.kas_description.length > 30 ? '...' : '' ) : '' }}
+									</p>
+								</td>
+								<!-- <td> 
+									<p ng-repeat="p in data.officers">
+										{{ p.total }}
+									</p>
+								</td> -->
+								<td>  
+									<p ng-repeat="p in data.officers">
+										{{ p.total_daily_cost }}
+									</p>
+								</td>
+								<!-- <th> -->
+									{{ data.totalRp }}
+								<!-- </th>  -->
+							</tr>
+							<!-- <tr ng-show="vm.listData.length > 0"> 
+								<td colspan="1">
+									<button type="button" class="btn btn-success" style="margin-right: 20px;" ng-click="vm.printReport()" 
+										ng-disabled="vm.listData.length === 0"
+										ng-show="vm.searchClicked">Print</button>
+								</td>
+								<td colspan="5" style="text-align: right;">
+									Total Keuangan per Bulan
+								</td>
+								<td>
+									<strong>
+										{{ vm.totalRp }}
+									</strong>
+								</td>
+							</tr> -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,259 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+
+					</h3>
+					<div class="box-tools">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="table_search" class="form-control pull-right" placeholder="Search" ng-model="vm.search">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th class="has-sort" ng-click="vm.toggleSort('id')">
+									No
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('reference_number')">
+									No. Surat Tugas
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-reference_number' && vm.orderBy !== '+reference_number' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+reference_number' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-reference_number' "></span>
+									</span>
+								</th>
+								<th>No. SPD / Nama Pegawai</th>
+								<th class="has-sort" ng-click="vm.toggleSort('transportation_type')">
+									Angkutan
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-transportation_type' && vm.orderBy !== '+transportation_type' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+transportation_type' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-transportation_type' "></span>
+									</span>
+								</th>
+								<th class="has-sort">
+									Kode Mata Kegiatan
+								</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy | filter:vm.search">
+								<td>{{$index + 1}}</td>
+								<td>{{data.reference_number}}</td>
+								<td>
+									<p ng-repeat="p in data.officers">
+										{{p.reference_number}} - {{p.name}} 
+										<span ng-show="data.column_e && data.column_f && data.transportation_type">
+											-
+										</span> 
+										<span 
+											ng-show="data.column_e && data.column_f && data.transportation_type"
+											class="glyphicon glyphicon-print"
+											style="cursor: pointer;" 
+											ng-click="vm.printSPD(p);">
+										</span>
+									</p>
+								</td>
+								<td>{{data.transportation_type}}</td>
+								<td>
+									<span ng-show="data.column_e && data.column_f">
+										{{ data.column_e }}<br/>
+										{{ data.column_f }}
+									</span>
+								</td>
+								
+								<td class="btn-actions">
+									<span 
+										class="glyphicon glyphicon-remove"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'confirm-modal.html');"
+										></span>
+									<span 
+										class="glyphicon glyphicon-pencil"
+										style="margin-right: 10px;" 
+										ng-click="vm.openModal(data, 'data-modal.html', 'lg');"
+										></span>
+									<span 
+										ng-show="data.column_e && data.column_f && data.transportation_type"
+										class="glyphicon glyphicon-log-in"
+										ng-click="vm.openModal(data, 'confirm-to-next-state-modal.html');"
+										></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="confirm-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Apakah Anda yakin, ingin menghapus data yang dipilih?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-danger btn-flat"
+				ng-click="vm.remove()">
+				Hapus
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="data-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Form Entry Surat Perjalanan Dinas</h4>
+		</div>
+		<div class="modal-body">
+
+			<form role="form">
+				<div class="box-body">
+					<div class="form-group">
+						<label>No. Surat Tugas</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.reference_number"  />
+					</div>
+
+					<div class="form-group">
+						<label>Pejabat Pembuat Komitmen</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" value="Drs. Djoko Prasetyo"  />
+					</div>
+
+					<div class="form-group" ng-repeat="p in vm.formValue.officers">
+						<label>No. SPD / Pegawai yang diperintahkan</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="p.nameTemp"  />
+					</div>
+
+					<div class="form-group">
+						<label>Maksud Dan Tujuan Perjalanan Dinas</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.task"  />
+					</div>
+
+					<div class="form-group" id="transportation_type" ng-class="{'has-error': vm.hasError['transportation_type']}">
+						<label>Alat Angkutan yang dipergunakan</label>
+						<select class="form-control" ng-model="vm.formValue.transportation_type">
+							<option ng-repeat="option in vm.listTransportType" value="{{option.name}}">{{option.name}}</option>
+						</select>
+					</div>
+
+					<h4>Tempat</h4>
+					<div class="form-group">
+						<label>a. Tempat Berangkat</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" value="Puspitek - Tangerang"  />
+					</div>
+					<div class="form-group">
+						<label>b. Tempat Tujuan</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.objective"  />
+					</div>
+
+					<h4>Tanggal</h4>
+					<div class="form-group">
+						<label>a. Lama Perjalanan Dinas</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.totalDayTemp"  />
+					</div>
+					<div class="form-group">
+						<label>b. Tanggal Berangkat</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.start_date"  />
+					</div>
+					<div class="form-group">
+						<label>c. Tanggal Kembali</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" ng-model="vm.formValue.end_date"  />
+					</div>
+
+					<h4>Pembebanan Anggaran</h4>
+					<div class="form-group">
+						<label>a. Instansi</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" value="Balai Teknologi Pengolahan Air dan Limbah"  />
+					</div>
+					<div class="form-group">
+						<label>b. Fungsi</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" value="04"  />
+					</div>
+					<div class="form-group">
+						<label>c. Program</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" value="081.01.06"  />
+					</div>
+					<div class="form-group">
+						<label>d. Kegiatan</label>
+						<input type="text" class="form-control" disabled style="cursor: default;" value="3470" />
+					</div>
+					<div class="form-group" id="column_e" ng-class="{'has-error': vm.hasError['column_e']}">
+						<label>e. Output</label>
+						<select class="form-control" ng-model="vm.formValue.column_e" ng-change="vm.columnEChanged();">
+							<option ng-repeat="option in vm.listBudgetType" value="{{option.name}}">{{option.name}}</option>
+						</select>
+					</div>
+					<div class="form-group" ng-show="vm.formValue.showColumnF" id="column_f" ng-class="{'has-error': vm.hasError['column_f']}">
+						<label>f. Mata Anggaran</label>
+						<select class="form-control" ng-model="vm.formValue.column_f">
+							<option ng-repeat="option in vm.listSubBudget" value="{{option}}">{{option}}</option>
+						</select>
+					</div>
+
+				</div>
+			</form>
+
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Tutup
+			</button>
+			<button type="button" class="btn btn-primary btn-flat"
+				ng-click="vm.submit()">
+				Simpan
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-to-next-state-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Tolong pastikan semua data sudah benar<br/>anda yakin ingin melanjutkan SPPD ini ?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-success btn-flat"
+				ng-click="vm.processToBiayaPerjalanan()">
+				<span class="glyphicon glyphicon-log-in"></span>
+				&nbsp;
+				Input Biaya SPD
+			</button>
+		</div>
+	</script>
+</div>
