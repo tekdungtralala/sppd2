@@ -115,7 +115,7 @@
 			window.open('print-rincian_biaya.php?id=' + data.id, '_blank');
 		}
 		function processToBuktiKas() {
-			dataservice.continueToBuktiKas( vm.formValue.id ).then( closeModal ).then( activate );
+			dataservice.continueToBuktiKas( vm.formValue.id, (new moment()).format('YYYY-MM-DD') ).then( closeModal ).then( activate );
 		}
 	}
 

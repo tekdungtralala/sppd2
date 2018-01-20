@@ -144,7 +144,7 @@
 		function updateSPPDOfficerBiaya( data ) { return $http.post( 'api/sppd/updateSPPDOfficerBiaya.php', data ); }
 		function getEntryBiayaSPD() { return $http.get( 'api/sppd/get.php?state=3' ).then( afterGet ); }
 		function updateSPPDOfficerTotal( data ) { return $http.post( 'api/sppd/updateSPPDOfficerTotal.php', data ); }
-		function continueToBuktiKas( id ) { return $http.post( 'api/sppd/continueToState4.php?id=' + id ); }
+		function continueToBuktiKas( id, date ) { return $http.post( 'api/sppd/continueToState4.php?id=' + id + '&date=' + date); }
 		function getEntryKas() { return $http.get( 'api/sppd/get.php?state=4' ).then( afterGet ); }
 		function updateSPPDOfficerKas( data ) { return $http.post( 'api/sppd/updateSPPDOfficerKas.php', data ); }
 		function continueToInputHasil( id ) { return $http.post( 'api/sppd/continueToState5.php?id=' + id ); }
