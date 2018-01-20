@@ -10,4 +10,5 @@
 	$_SESSION["startDate"] = $startDate;
 	$_SESSION["endDate"] = $endDate;
 	$_SESSION["totalRp"] = $_GET['totalRp'];
+	$_SESSION["dipaCodeId"] = $_GET['dipaCodeId'];
 ?>

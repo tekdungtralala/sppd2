@@ -8,6 +8,7 @@
 	function Controller($q, $scope, $rootScope, $state, $uibModal, abstractPage, helper, dataservice) {
 		var vm = this;
 		var startDate, endDate;
+		var dipaCodeId;
 		vm.months = [];
 		vm.listData = [];
 		vm.month;
@@ -51,6 +52,7 @@
 			function afterGetAll( responses ) {
 				vm.listData = responses[0];
 				_.forEach( vm.listData, function( data ) {
+					dipaCodeId = data.dipa_code_id;
 					dataservice.getSPPDOfficer( data.id ).then( afterGetSPPDOfficer );
 					data.total = 0;
 					function afterGetSPPDOfficer( officers ) {
@@ -78,7 +80,7 @@
 
 		vm.printReport = printReport;
 		function printReport() {
-			dataservice.postReportData( vm.listData, startDate, endDate, vm.totalDaily ).then( afterPrintReport );
+			dataservice.postReportData( vm.listData, startDate, endDate, vm.totalDaily, dipaCodeId).then( afterPrintReport );
 			function afterPrintReport() {
 				// window.open('api/print/8-laporan-keuangan.php');
 				window.open('api/print/laporan-rekapitulasi-kas.php');

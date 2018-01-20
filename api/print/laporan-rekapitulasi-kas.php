@@ -124,50 +124,91 @@ session_start();
 	   $data = $_SESSION["data"];
 	   
 	   $html2 = "";
-		
+		$dipaSql = "select * from dipa_code where id= " . $_SESSION["dipaCodeId"];
+		$dipaResult = $conn->query($dipaSql);
+		$dipaRow = $dipaResult->fetch_assoc();
+
+		$parentNomor = $dipaRow["code_number"];
+		$parentDate = $dipaRow["date"];
+
+		if ($dipaRow['parent_id'] != null) {
+			$dipaSqlP = "select * from dipa_code where id= " . $dipaRow['parent_id'];
+			$dipaResultP = $conn->query($dipaSqlP);
+			$dipaRowP = $dipaResultP->fetch_assoc();
+			$parentNomor = $dipaRowP["code_number"];
+			$parentDate = $dipaRowP["date"];
+
+			// $parentNomor = 'asdf';
+			// $parentDate = 'sdfsdf';
+		}
+
 		$html2.='<table cellpadding="1">
 		
 	
 	<tr>
 		<th width="150"> Tahun Anggaran</th>
-		<th width="300"> : (dari database)</th>
+		<th width="300"> : ';
+		$html2.=$dipaRow["fiscal_year"];
+		$html2.='</th>
 		
 	</tr>
 	<tr>
 		<th width="150"> Kementerian/Lembaga</th>
-		<th width="300"> : (081) BADAN PENGKAJIAN DAN PENERAPAN TEKNOLOGI</th>
+		<th width="300"> : ';
+		$html2.=$dipaRow["institution"];
+		$html2.='</th>
 		
 	</tr>
 	
 	<tr>
 		<th width="150"> Unit Organisasi</th>
-		<th width="300"> : (01) BADAN PENGKAJIAN DAN PENERAPAN TEKNOLOGI</th>
+		<th width="300"> : ';
+		$html2.=$dipaRow["organizational_unit"];
+		$html2.='</th>
 		
 	</tr>
 	<tr>
 		<th width="150"> Provinsi/Kabupaten/Kota</th>
-		<th width="300"> : (29.04) KAB.TANGERANG</th>
+		<th width="300"> : ';
+		$html2.=$dipaRow["city"];
+		$html2.='</th>
 		
 	</tr>
 	<tr>
 		<th width="150"> Satuan Kerja</th>
-		<th width="350"> : (6311034) BALAI TEKNOLOGI PENGOLAHAN AIR DAN LIMBAH</th>
+		<th width="350"> : ';
+		$html2.=$dipaRow["work_unit"];
+		$html2.='</th>
 	</tr>
 	<tr>
 		<th width="150"> Dokumen</th>
-		<th width="300"> : (01) DIPA</th>
+		<th width="300"> : ';
+		$html2.=$dipaRow["document"];
+		$html2.='</th>
 	</tr>
 	<tr>
 		<th width="150"> Nomor / Tanggal Dokumen</th>
-		<th width="300"> : {dari database}</th>
+		<th width="300"> : ';
+		$html2.=$parentNomor;
+		$html2.=' ';
+		$html2.=$parentDate;
+		$html2.='</th>
 	</tr>
 	<tr>
 		<th width="150"> Revisi ke</th>
-		<th width="300"> : {dari database}</th>
+		<th width="300"> : (';
+		$html2.=$dipaRow["revisi"];
+		$html2.=') ';
+		$html2.=$dipaRow["code_number"];
+		$html2.=' ';
+		$html2.=$dipaRow["date"];
+		$html2.='</th>
 	</tr>
 	<tr>
 		<th width="150"> KPPN</th>
-		<th width="300"> : (127) Tangerang</th>
+		<th width="300"> : ';
+		$html2.=$dipaRow["kppn"];
+		$html2.='</th>
 	</tr>
 	
 

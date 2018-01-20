@@ -57,12 +57,14 @@
 		};
 		return service;
 
-		function postReportData(data, startDate, endDate, totalRp) {
+		function postReportData(data, startDate, endDate, totalRp, dipaCodeId) {
 			var qp = '';
 			if (startDate && endDate)
 				qp = qp + 'startDate=' + startDate + '&endDate=' + endDate;
 			if (totalRp)
 				qp = qp + '&totalRp=' + totalRp;
+			if (dipaCodeId)
+				qp = qp + '&dipaCodeId=' + dipaCodeId;
 			return $http.post( 'api/print/postReportData.php?' + qp, data );
 		}
 
