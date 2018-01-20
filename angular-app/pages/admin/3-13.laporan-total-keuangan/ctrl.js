@@ -11,6 +11,7 @@
 		vm.months = [];
 		vm.listData = [];
 		vm.month;
+		vm.totalDaily;
 
 		activate();
 		function activate() {
@@ -35,6 +36,7 @@
 		vm.monthChanged = function () {}
 
 		vm.submitSearch = function () {
+			var totalDaily = 0;
 			var month = JSON.parse(vm.month);
 			var val = month.year + '-' + month.id;
 			var m = moment( val, 'YYYY-MM' );
@@ -52,13 +54,20 @@
 					dataservice.getSPPDOfficer( data.id ).then( afterGetSPPDOfficer );
 					data.total = 0;
 					function afterGetSPPDOfficer( officers ) {
+						var totalDailyO = 0;
 						_.forEach(officers, function(o) {
 							var t = parseInt(o.total_cost);
 							data.total = data.total + t;
 							o.total = helper.toRp(t);
+
+							totalDaily = parseInt(totalDaily) + parseInt(o.total_daily_cost);
+							vm.totalDaily = helper.toRp(totalDaily);
+
+							totalDailyO = totalDailyO + parseInt(o.total_daily_cost);
 						});
 						data.officers = officers;
 						data.totalRp = helper.toRp(data.total);
+						data.totalDailyO = helper.toRp(totalDailyO);
 
 						vm.total = vm.total + data.total;
 						vm.totalRp = helper.toRp(vm.total);
@@ -69,7 +78,7 @@
 
 		vm.printReport = printReport;
 		function printReport() {
-			dataservice.postReportData( vm.listData, startDate, endDate, vm.totalRp ).then( afterPrintReport );
+			dataservice.postReportData( vm.listData, startDate, endDate, vm.totalDaily ).then( afterPrintReport );
 			function afterPrintReport() {
 				// window.open('api/print/8-laporan-keuangan.php');
 				window.open('api/print/laporan-rekapitulasi-kas.php');

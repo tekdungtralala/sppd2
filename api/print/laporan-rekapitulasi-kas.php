@@ -220,7 +220,7 @@ session_start();
 		}
 			$tbl .= "</td>";	
 			
-		$tbl .= "<td>uang harian</td>";
+		$tbl .= "<td>". $d->totalDailyO . "</td>";
 		
 		$tbl .= "</tr>";
 
@@ -228,7 +228,7 @@ session_start();
 			
 			$tbl .= "<tr><td></td><td></td><td></td>";
 				$tbl .= "<td colspan='5'>JUMLAH TOTAL</td>";
-				$tbl .= "<td style='width: 118.6px; height: 17px; text-align: left;'>Rp. jumlah kredit/uangharian</td>";
+				$tbl .= "<td style='width: 118.6px; height: 17px; text-align: left;'>".$_SESSION["totalRp"]."</td>";
 			
 			$tbl .= "</tr>";
 

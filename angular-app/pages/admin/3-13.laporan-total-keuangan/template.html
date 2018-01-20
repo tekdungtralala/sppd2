@@ -80,9 +80,14 @@
 										{{ p.total_daily_cost }}
 									</p>
 								</td>
-								<!-- <th> -->
+								<!-- <th> 
 									{{ data.totalRp }}
-								<!-- </th>  -->
+								</th>  -->
+							</tr>
+							<tr ng-show="vm.listData.length > 0"> 
+								<td colspan="5" style="text-align: right;">
+									{{ vm.totalDaily }}
+								</td>
 							</tr>
 							<!-- <tr ng-show="vm.listData.length > 0"> 
 								<td colspan="1">
