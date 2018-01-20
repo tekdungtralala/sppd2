@@ -87,6 +87,15 @@
 					titlePage: 'Data Biaya Dinas',
 					isSecure: true
 				})
+		 		.state('admin.data-kode-dipa', {
+					url: '/data-kode-dipa',
+					templateUrl: 'angular-app/pages/admin/1-8.data-kode-dipa/template.html?version=' + window.version,
+					controller: 'data-kode-dipa.ctrl',
+					controllerAs: 'vm',
+					treeViewActive: 'Master',
+					titlePage: 'Data Kode Dipa',
+					isSecure: true
+ 				})
 
 
 

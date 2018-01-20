@@ -14,6 +14,8 @@
 
 			getGolongan: getGolongan, createGolongan: createGolongan, editGolongan: editGolongan, removeGolongan: removeGolongan,
 
+			getDipa: getDipa, createDipa: createDipa, editDipa: editDipa, removeDipa: removeDipa,
+
 			getPegawai: getPegawai, createPegawai: createPegawai, editPegawai: editPegawai, removePegawai: removePegawai,
 
 			getProvinsi: getProvinsi, createProvinsi: createProvinsi, editProvinsi: editProvinsi, removeProvinsi: removeProvinsi,
@@ -94,6 +96,11 @@
 		function createGolongan( data ) { return postAPI('golongan', data); }
 		function editGolongan( data ) { return putAPI('golongan', data); }
 		function removeGolongan( id ) { return deleteAPI('golongan', id); }
+
+		function getDipa() { return getAPI('dipa-code'); }
+		function createDipa( data ) { return postAPI('dipa-code', data); }
+		function editDipa( data ) { return putAPI('dipa-code', data); }
+		function removeDipa( id ) { return deleteAPI('dipa-code', id); }
 
 		function getPegawai() { return getAPI('pegawai'); }
 		function createPegawai( data ) { return postAPI('pegawai', data); }

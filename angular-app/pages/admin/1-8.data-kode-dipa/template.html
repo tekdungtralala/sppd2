@@ -1,0 +1,247 @@
+<div>
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="box">
+				<div class="box-header">
+					<h3 class="box-title">
+						<button type="button" class="btn btn-block btn-success btn-flat"
+							ng-click="vm.openModal(null, 'data-modal.html');">
+							<span class="glyphicon glyphicon-plus"></span>
+							&nbsp;
+							Create
+						</button>
+					</h3>
+					<div class="box-tools">
+						<div class="input-group input-group-sm" style="width: 150px;">
+							<input type="text" name="table_search" class="form-control pull-right" placeholder="Search" ng-model="vm.search">
+							<div class="input-group-btn">
+								<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="box-body table-responsive no-padding">
+					<table class="table table-hover">
+						<tbody>
+							<tr>
+								<th class="has-sort" ng-click="vm.toggleSort('id')">
+									ID
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-id' && vm.orderBy !== '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+id' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-id' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('fiscal_year')">
+									Tahun Anggaran
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+fiscal_year' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+fiscal_year' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-fiscal_year' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('document')">
+									Dokumen
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+document' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+document' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-document' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('code_number')">
+									Nomor Dipa
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+code_number' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+code_number' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-code_number' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('date')">
+									Tanggal Dokumen
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+date' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+date' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-date' "></span>
+									</span>
+								</th>
+								<th class="has-sort" ng-click="vm.toggleSort('revisi')">
+									Revisi
+									<span>
+										<span class="glyphicon glyphicon-sort" ng-show=" vm.orderBy !== '-name' && vm.orderBy !== '+revisi' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes" ng-show=" vm.orderBy === '+revisi' "></span>
+										<span class="glyphicon glyphicon-sort-by-attributes-alt" ng-show=" vm.orderBy === '-revisi' "></span>
+									</span>
+								</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="data in vm.listData | orderBy: vm.orderBy | filter:vm.search">
+								<td>{{data.id}}</td>
+								<td>{{data.fiscal_year}}</td>
+								<td>{{data.document}}</td>
+								<td>{{data.code_number}}</td>
+								<td>{{data.date}}</td>
+								<td>{{data.revisi}}</td>
+								<td class="btn-actions">
+									<span ng-show="data.imutable !== '1'"
+										class="glyphicon glyphicon-pencil"
+										ng-click="vm.openModal(data, 'data-modal.html');"
+										></span>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="data-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Form Input Golongan</h4>
+		</div>
+		<div class="modal-body">
+
+			<form role="form">
+				<div class="box-body">
+					<div class="form-group" ng-show="vm.formValue.id">
+						<label >Id</label>
+						<input type="text" class="form-control" placeholder="Enter email" disabled
+							ng-model="vm.formValue.id">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['fiscal_year']}">
+						<label >Tahun Anggaran</label>
+						<input type="text" class="form-control"
+							placeholder="Tahun Anggaran"
+							id="fiscal_year"
+							ng-model="vm.formValue.fiscal_year">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['institution']}">
+						<label >Kementrian/Lembaga</label>
+						<input type="text" class="form-control"
+							placeholder="Kementrian/Lembaga"
+							id="institution"
+							ng-model="vm.formValue.institution">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['organizational_unit']}">
+						<label >Unit Organisasi</label>
+						<input type="text" class="form-control"
+							placeholder="Unit Organisasi"
+							id="organizational_unit"
+							ng-model="vm.formValue.organizational_unit">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['city']}">
+						<label >Profinsi/Kabupaten/Kota</label>
+						<input type="text" class="form-control"
+							placeholder="Profinsi/Kabupaten/Kota"
+							id="city"
+							ng-model="vm.formValue.city">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['work_unit']}">
+						<label >Satuan Kerja</label>
+						<input type="text" class="form-control"
+							placeholder="Profinsi/Kabupaten/Kota"
+							id="work_unit"
+							ng-model="vm.formValue.work_unit">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['document']}">
+						<label >Dokumen</label>
+						<input type="text" class="form-control"
+							placeholder="Dokumen"
+							id="document"
+							ng-model="vm.formValue.document">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['code_number']}">
+						<label >Nomor DIPA</label>
+						<input type="text" class="form-control"
+							placeholder="Nomor DIPA"
+							id="code_number"
+							ng-model="vm.formValue.code_number">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['date']}">
+						<label >Tanggal Dokumen</label>
+						<p class="input-group">
+							<input type="text" class="form-control" id="date"
+								uib-datepicker-popup
+								ng-model="vm.formValue.date" 
+								is-open="startDateOpen"
+								datepicker-options="dateOptions" 
+								close-text="Close"
+								alt-input-formats="altInputFormats"  ng-disabled="vm.formValue.disabled" style="cursor: default;"/>
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default" ng-click="startDateOpen = !startDateOpen"  ng-disabled="vm.formValue.disabled" style="cursor: default;">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</button>
+							</span>
+						</p>
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['kppn']}">
+						<label >KPPN</label>
+						<input type="text" class="form-control"
+							placeholder="KPPN"
+							id="kppn"
+							ng-model="vm.formValue.kppn">
+					</div>
+
+					<div class="form-group" ng-class="{'has-error': vm.hasError['kppn']}"
+						ng-show="vm.formValue.id != null">
+						<label >Revisi</label>
+						<input type="text" class="form-control"
+							ng-disabled="true"
+							ng-model="vm.formValue.revisi">
+					</div>
+				</div>
+				<div class="form-group" >
+					<strong ng-show="vm.formValue.id == null">Membuat baru kode DIPA akan me-nonaktifkan kode DIPA sebelumnya.<br/></strong>
+					<strong ng-show="vm.formValue.id != null">Mengedit kode DIPA akan menambah jumlah revisi.</strong>
+				</div>
+			</form>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Tutup
+			</button>
+			<button type="button" class="btn btn-primary btn-flat"
+				ng-click="vm.submit()">
+				Simpan
+			</button>
+		</div>
+	</script>
+
+	<script type="text/ng-template" id="confirm-modal.html">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"
+				ng-click="vm.closeModal()">
+				<span aria-hidden="true">×</span>
+			</button>
+			<h4 class="modal-title">Confirmation</h4>
+		</div>
+		<div class="modal-body">
+			<p>Apakah Anda yakin, ingin menghapus data yang dipilih?</p>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default pull-left btn-flat"
+				ng-click="vm.closeModal();">
+				Batal
+			</button>
+			<button type="button" class="btn btn-danger btn-flat"
+				ng-click="vm.remove()">
+				Hapus
+			</button>
+		</div>
+	</script>
+</div>
