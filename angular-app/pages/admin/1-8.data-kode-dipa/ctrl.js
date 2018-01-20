@@ -69,7 +69,7 @@
 				
 				if ( vm.formValue.id ) {
 					vm.formValue.revisi = parseInt(vm.formValue.revisi) + 1;
-					vm.formValue.parent_id = vm.formValue.id;
+					vm.formValue.parent_id = vm.formValue.parent_id;
 
 					var data = { id: vm.formValue.id };
 					dataservice.editDipa( data ).then( function() {
