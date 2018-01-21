@@ -276,6 +276,13 @@ session_start();
 			$tbl.='</table>';
 			'</br>';
 
+			$sqlK = "select * from officer where office_position_id = (select id from office_position where name like '%Kepala Balai Teknologi%')";
+			$resultK = $conn->query($sqlK);
+			$rowK = $resultK->fetch_assoc();
+
+			$sqlB = "select * from officer where office_position_id = (select id from office_position where name like '%Bendahara%')";
+			$resultB = $conn->query($sqlB);
+			$rowB = $resultB->fetch_assoc();
 
 			$html="";
 			$html .= '
@@ -302,9 +309,19 @@ session_start();
 						<td>&nbsp;</td>
 					</tr>
 					<tr>
-						<td>Ir. Setiyono, M.Si <br /> NIP. 196709011994031003</td>
+						<td>';
+						$html.=$rowK['name'];
+						$html.='<br />NIP.';
+						$html.=$rowK['officer_id'];
+						$html.='
+							</td>
 						<td></td>
-						<td>Nurlela, SE., M.Ak <br /> NIP. 197810032009102001</td>
+						<td>';
+						$html.=$rowB['name'];
+						$html.='<br />NIP.';
+						$html.=$rowB['officer_id'];
+						$html.='
+						</td>
 					</tr>
 				</thead>';
 			$html.='</table>';
